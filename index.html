@@ -1,0 +1,693 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cia Detox • Registro de Entregas</title>
+  <style>
+    :root {
+      --bg1: #fff7fb;
+      --bg2: #fdf2f8;
+      --card: rgba(255,255,255,0.92);
+      --border: rgba(244,114,182,0.18);
+      --text: #3f2a35;
+      --muted: #7a6270;
+      --brand: #f3d1e0;
+      --brand-strong: #e78ab5;
+      --accent: #c05686;
+      --ok: #198754;
+      --warn: #d97706;
+      --danger: #dc3545;
+      --shadow: 0 10px 35px rgba(180, 111, 145, 0.15);
+      --radius: 22px;
+    }* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  min-height: 100vh;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.brand-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: 18px;
+  flex: 1 1 380px;
+}
+
+.brand-box h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.brand-box p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.date-box {
+  background: linear-gradient(135deg, var(--brand), #fff);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  min-width: 240px;
+  box-shadow: var(--shadow);
+}
+
+.date-box .small {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.date-box .big {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 1.08rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field.full { grid-column: 1 / -1; }
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid #ead3df;
+  outline: none;
+  background: white;
+  color: var(--text);
+  font-size: 0.96rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--brand-strong);
+  box-shadow: 0 0 0 4px rgba(231, 138, 181, 0.14);
+}
+
+textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+button:hover { transform: translateY(-1px); }
+
+.btn-main {
+  background: linear-gradient(135deg, var(--brand-strong), var(--accent));
+  color: white;
+  flex: 1 1 220px;
+}
+
+.btn-soft {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid #eed5e1;
+  flex: 1 1 180px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  background: #fff;
+  border: 1px solid #f0d9e4;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.stat .label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.stat .value {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.list {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+  max-height: 620px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.delivery {
+  border: 1px solid #efd9e4;
+  background: white;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.delivery-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.delivery h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.delivery small {
+  color: var(--muted);
+  display: block;
+  margin-top: 4px;
+}
+
+.badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-entregue { background: rgba(25,135,84,0.12); color: var(--ok); }
+.status-pendente { background: rgba(217,119,6,0.14); color: var(--warn); }
+.status-cancelado { background: rgba(220,53,69,0.12); color: var(--danger); }
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+  font-size: 0.92rem;
+}
+
+.meta div {
+  background: #fff8fb;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid #f3dce7;
+}
+
+.delivery-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-top: 8px;
+  white-space: pre-wrap;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.row-actions button {
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+}
+
+.mini-green { background: rgba(25,135,84,0.12); color: var(--ok); }
+.mini-yellow { background: rgba(217,119,6,0.14); color: var(--warn); }
+.mini-red { background: rgba(220,53,69,0.12); color: var(--danger); }
+.mini-white { background: white; border: 1px solid #ecd8e2; color: var(--text); }
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 30px 14px;
+  border: 1px dashed #ebcad8;
+  border-radius: 18px;
+  background: #fffafd;
+}
+
+.footer-note {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .grid { grid-template-columns: 1fr; }
+  .filters { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .wrap { padding: 12px; }
+  .form-grid, .stats, .meta, .filters { grid-template-columns: 1fr; }
+  .date-box { width: 100%; }
+  .brand-box, .date-box, .card { border-radius: 18px; }
+  .delivery-top { flex-direction: column; align-items: flex-start; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand-box">
+        <h1>Cia Detox da Fronteira • Registro de Entregas</h1>
+        <p>Controle simples para o entregador registrar corridas, valores, pagamentos e status das entregas.</p>
+      </div>
+      <div class="date-box">
+        <div class="small">Hoje</div>
+        <div class="big" id="todayLabel">--</div>
+      </div>
+    </div><div class="grid">
+  <section class="card">
+    <h2>Nova entrega</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label for="cliente">Cliente</label>
+        <input id="cliente" placeholder="Ex: João da oficina" />
+      </div>
+      <div class="field">
+        <label for="telefone">Telefone</label>
+        <input id="telefone" placeholder="Ex: +595... ou +55..." />
+      </div>
+      <div class="field full">
+        <label for="endereco">Endereço</label>
+        <input id="endereco" placeholder="Rua, bairro, referência" />
+      </div>
+      <div class="field">
+        <label for="pedido">Pedido</label>
+        <input id="pedido" placeholder="Ex: 2 marmitas G + 1 suco" />
+      </div>
+      <div class="field">
+        <label for="entregador">Entregador</label>
+        <input id="entregador" placeholder="Nome do entregador" />
+      </div>
+      <div class="field">
+        <label for="valor">Valor da entrega</label>
+        <input id="valor" type="number" step="0.01" placeholder="Ex: 5000 ou 10" />
+      </div>
+      <div class="field">
+        <label for="moeda">Moeda</label>
+        <select id="moeda">
+          <option value="G$">Guarani (G$)</option>
+          <option value="R$">Real (R$)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pagamento">Pagamento</label>
+        <select id="pagamento">
+          <option>Dinheiro</option>
+          <option>Pix</option>
+          <option>Mango</option>
+          <option>Transferência</option>
+          <option>Pendente</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status">
+          <option>Entregue</option>
+          <option>Pendente</option>
+          <option>Cancelado</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="observacao">Observação</label>
+        <textarea id="observacao" placeholder="Ex: cliente pediu pra chamar no portão, sem troco, entregar no fundo..."></textarea>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-main" id="saveBtn">Salvar entrega</button>
+      <button class="btn-soft" id="clearBtn">Limpar campos</button>
+    </div>
+  </section>
+
+  <aside class="card">
+    <h2>Resumo rápido</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="label">Entregas hoje</div>
+        <div class="value" id="entregasHoje">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Pendentes</div>
+        <div class="value" id="pendentesHoje">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Total em G$</div>
+        <div class="value" id="totalGs">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Total em R$</div>
+        <div class="value" id="totalRs">0</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<section class="card" style="margin-top:18px;">
+  <h2>Histórico de entregas</h2>
+  <div class="filters">
+    <input id="searchInput" placeholder="Pesquisar cliente, endereço, pedido..." />
+    <select id="filterStatus">
+      <option value="Todos">Todos os status</option>
+      <option value="Entregue">Entregue</option>
+      <option value="Pendente">Pendente</option>
+      <option value="Cancelado">Cancelado</option>
+    </select>
+    <select id="filterPagamento">
+      <option value="Todos">Todos os pagamentos</option>
+      <option value="Dinheiro">Dinheiro</option>
+      <option value="Pix">Pix</option>
+      <option value="Mango">Mango</option>
+      <option value="Transferência">Transferência</option>
+      <option value="Pendente">Pendente</option>
+    </select>
+    <button class="btn-soft" id="exportBtn">Exportar JSON</button>
+  </div>
+  <div class="list" id="deliveryList"></div>
+</section>
+
+<div class="footer-note">Os dados ficam salvos no navegador do aparelho usado pelo entregador.</div>
+
+  </div>  <script>
+    const STORAGE_KEY = 'cia_detox_entregas_v1';
+    const formIds = ['cliente','telefone','endereco','pedido','entregador','valor','moeda','pagamento','status','observacao'];
+    let editingId = null;
+
+    const el = (id) => document.getElementById(id);
+    const getData = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const setData = (data) => localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+    function todayStr() {
+      return new Date().toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function formatMoney(value, currency) {
+      const n = Number(value || 0);
+      return currency + ' ' + n.toLocaleString('pt-BR', { minimumFractionDigits: currency === 'R$' ? 2 : 0, maximumFractionDigits: currency === 'R$' ? 2 : 0 });
+    }
+
+    function clearForm() {
+      formIds.forEach(id => {
+        if (id === 'moeda') el(id).value = 'G$';
+        else if (id === 'pagamento') el(id).value = 'Dinheiro';
+        else if (id === 'status') el(id).value = 'Entregue';
+        else el(id).value = '';
+      });
+      editingId = null;
+      el('saveBtn').textContent = 'Salvar entrega';
+    }
+
+    function validateForm() {
+      const cliente = el('cliente').value.trim();
+      const endereco = el('endereco').value.trim();
+      const pedido = el('pedido').value.trim();
+      const entregador = el('entregador').value.trim();
+      const valor = el('valor').value;
+
+      if (!cliente || !endereco || !pedido || !entregador || !valor) {
+        alert('Preencha cliente, endereço, pedido, entregador e valor.');
+        return false;
+      }
+      return true;
+    }
+
+    function buildRecord() {
+      return {
+        id: editingId || Date.now().toString(),
+        cliente: el('cliente').value.trim(),
+        telefone: el('telefone').value.trim(),
+        endereco: el('endereco').value.trim(),
+        pedido: el('pedido').value.trim(),
+        entregador: el('entregador').value.trim(),
+        valor: Number(el('valor').value || 0),
+        moeda: el('moeda').value,
+        pagamento: el('pagamento').value,
+        status: el('status').value,
+        observacao: el('observacao').value.trim(),
+        criadoEm: editingId ? undefined : new Date().toISOString(),
+        atualizadoEm: new Date().toISOString()
+      };
+    }
+
+    function saveRecord() {
+      if (!validateForm()) return;
+      const record = buildRecord();
+      const data = getData();
+
+      if (editingId) {
+        const index = data.findIndex(item => item.id === editingId);
+        if (index !== -1) {
+          record.criadoEm = data[index].criadoEm || data[index].atualizadoEm;
+          data[index] = record;
+        }
+      } else {
+        data.unshift(record);
+      }
+
+      setData(data);
+      clearForm();
+      renderAll();
+    }
+
+    function editRecord(id) {
+      const data = getData();
+      const item = data.find(x => x.id === id);
+      if (!item) return;
+      editingId = id;
+      el('cliente').value = item.cliente || '';
+      el('telefone').value = item.telefone || '';
+      el('endereco').value = item.endereco || '';
+      el('pedido').value = item.pedido || '';
+      el('entregador').value = item.entregador || '';
+      el('valor').value = item.valor || '';
+      el('moeda').value = item.moeda || 'G$';
+      el('pagamento').value = item.pagamento || 'Dinheiro';
+      el('status').value = item.status || 'Entregue';
+      el('observacao').value = item.observacao || '';
+      el('saveBtn').textContent = 'Atualizar entrega';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteRecord(id) {
+      if (!confirm('Deseja excluir esta entrega?')) return;
+      const data = getData().filter(item => item.id !== id);
+      setData(data);
+      renderAll();
+    }
+
+    function toggleStatus(id, newStatus) {
+      const data = getData();
+      const index = data.findIndex(item => item.id === id);
+      if (index === -1) return;
+      data[index].status = newStatus;
+      data[index].atualizadoEm = new Date().toISOString();
+      setData(data);
+      renderAll();
+    }
+
+    function exportJson() {
+      const data = getData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'entregas-cia-detox.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function matchesFilters(item) {
+      const q = el('searchInput').value.trim().toLowerCase();
+      const status = el('filterStatus').value;
+      const pagamento = el('filterPagamento').value;
+
+      const text = [
+        item.cliente,
+        item.telefone,
+        item.endereco,
+        item.pedido,
+        item.entregador,
+        item.pagamento,
+        item.status,
+        item.observacao
+      ].join(' ').toLowerCase();
+
+      const okQuery = !q || text.includes(q);
+      const okStatus = status === 'Todos' || item.status === status;
+      const okPagamento = pagamento === 'Todos' || item.pagamento === pagamento;
+      return okQuery && okStatus && okPagamento;
+    }
+
+    function renderStats(data) {
+      const hoje = new Date().toLocaleDateString('pt-BR');
+      const todayItems = data.filter(item => new Date(item.criadoEm || item.atualizadoEm).toLocaleDateString('pt-BR') === hoje);
+      const pendentes = todayItems.filter(item => item.status === 'Pendente').length;
+      const totalGs = todayItems.filter(item => item.moeda === 'G$' && item.status !== 'Cancelado').reduce((a,b) => a + Number(b.valor || 0), 0);
+      const totalRs = todayItems.filter(item => item.moeda === 'R$' && item.status !== 'Cancelado').reduce((a,b) => a + Number(b.valor || 0), 0);
+
+      el('entregasHoje').textContent = todayItems.length;
+      el('pendentesHoje').textContent = pendentes;
+      el('totalGs').textContent = totalGs.toLocaleString('pt-BR');
+      el('totalRs').textContent = totalRs.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function badgeClass(status) {
+      if (status === 'Entregue') return 'status-entregue';
+      if (status === 'Pendente') return 'status-pendente';
+      return 'status-cancelado';
+    }
+
+    function renderList(data) {
+      const list = el('deliveryList');
+      const filtered = data.filter(matchesFilters);
+
+      if (!filtered.length) {
+        list.innerHTML = '<div class="empty">Nenhuma entrega encontrada.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(item => {
+        const when = new Date(item.criadoEm || item.atualizadoEm);
+        return `
+          <div class="delivery">
+            <div class="delivery-top">
+              <div>
+                <h3>${escapeHtml(item.cliente)}</h3>
+                <small>${when.toLocaleDateString('pt-BR')} • ${when.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</small>
+              </div>
+              <span class="badge ${badgeClass(item.status)}">${escapeHtml(item.status)}</span>
+            </div>
+
+            <div class="meta">
+              <div><strong>Pedido:</strong><br>${escapeHtml(item.pedido)}</div>
+              <div><strong>Valor:</strong><br>${formatMoney(item.valor, item.moeda)}</div>
+              <div><strong>Pagamento:</strong><br>${escapeHtml(item.pagamento)}</div>
+              <div><strong>Entregador:</strong><br>${escapeHtml(item.entregador)}</div>
+              <div><strong>Telefone:</strong><br>${escapeHtml(item.telefone || '-')}</div>
+              <div><strong>Endereço:</strong><br>${escapeHtml(item.endereco)}</div>
+            </div>
+
+            ${item.observacao ? `<div class="delivery-note"><strong>Obs:</strong> ${escapeHtml(item.observacao)}</div>` : ''}
+
+            <div class="row-actions">
+              <button class="mini-white" onclick="editRecord('${item.id}')">Editar</button>
+              <button class="mini-green" onclick="toggleStatus('${item.id}','Entregue')">Marcar entregue</button>
+              <button class="mini-yellow" onclick="toggleStatus('${item.id}','Pendente')">Marcar pendente</button>
+              <button class="mini-red" onclick="deleteRecord('${item.id}')">Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function renderAll() {
+      const data = getData();
+      renderStats(data);
+      renderList(data);
+    }
+
+    el('todayLabel').textContent = todayStr();
+    el('saveBtn').addEventListener('click', saveRecord);
+    el('clearBtn').addEventListener('click', clearForm);
+    el('exportBtn').addEventListener('click', exportJson);
+    el('searchInput').addEventListener('input', renderAll);
+    el('filterStatus').addEventListener('change', renderAll);
+    el('filterPagamento').addEventListener('change', renderAll);
+
+    clearForm();
+    renderAll();
+
+    window.editRecord = editRecord;
+    window.deleteRecord = deleteRecord;
+    window.toggleStatus = toggleStatus;
+  </script></body>
+</html>
